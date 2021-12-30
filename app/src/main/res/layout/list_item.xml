@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
-                android:id="@+id/img_grid_cell"
+                android:id="@+id/img_grid_cell_thumbnail"
                 android:layout_width="match_parent"
-                android:src="@drawable/ic_video_default_4"
+                android:src="@drawable/ic_video_default_2"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop">
             </ImageView>

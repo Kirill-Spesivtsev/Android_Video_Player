@@ -1,10 +1,14 @@
 package com.example.android_video_player;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -43,8 +47,14 @@ public class VideoAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = inflater.inflate(R.layout.list_item,null);
         TextView videoName = v.findViewById(R.id.text_video_name);
-        //songTitle.setSelected(true);
-        //songTitle.setTypeface(Typeface.DEFAULT);
+        ImageView thumbnailImage = v.findViewById(R.id.img_grid_cell_thumbnail);
+
+        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(objects.get(i).getAbsolutePath(),
+                MediaStore.Images.Thumbnails.MINI_KIND);
+
+        thumbnailImage.setImageBitmap(thumb);
+
+        videoName.setSelected(true);
         videoName.setText(objects.get(i).getName());
 
         return v;
