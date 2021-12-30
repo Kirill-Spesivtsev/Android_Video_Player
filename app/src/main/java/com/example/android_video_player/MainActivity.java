@@ -1,18 +1,24 @@
 package com.example.android_video_player;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.io.File;
@@ -27,9 +33,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.hide();
+
         setContentView(R.layout.activity_main);
 
         requestPermissions();
+
+        GridView gv = findViewById(R.id.video_list);
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                callPlayer((File) videoAdapter.getItem((int)l));
+            }
+        });
     }
 
     @Override
@@ -107,4 +128,11 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.videoAdapter = new VideoAdapter(this, videoFiles);
         gv.setAdapter(MainActivity.videoAdapter);
     }
+
+    private void callPlayer(File f){
+        startActivity(new Intent(MainActivity.this,VideoPlayerActivity.class)
+                .putExtra("videoFullPath",f.getAbsolutePath())
+                .putExtra("videoFileName",f.getName()));
+    }
+
 }
